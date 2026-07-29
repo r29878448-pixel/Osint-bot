@@ -38,10 +38,15 @@
         }
 
         async function fetchContent(page) {
-            const api1 = `https://devcoderz-player.vercel.app/api/lectures?batchId=${bId}&subjectId=${sId}&contentType=${currentTab}&tag=${tId}&page=${page}`;
-            const api2 = `https://devcoderz-player.vercel.app/api/notes?batchId=${bId}&subjectId=${sId}&contentType=${currentTab}&tag=${tId}&page=${page}`;
-            const url = (page === 1) ? api1 : api2;
-            const res = await fetch(url);
+            // Ab yahan koi bhi third-party API ya lambe URLs nahi dikhenge.
+            // Sirf ek clean internal proxy route call hoga.
+            const secureUrl = `/api/content?batchId=${bId}&subjectId=${sId}&contentType=${currentTab}&tag=${tId}&page=${page}`;
+            
+            const res = await fetch(secureUrl, {
+                headers: {
+                    "X-Requested-With": "XMLHttpRequest"
+                }
+            });
             return await res.json();
         }
 
@@ -49,18 +54,19 @@
             if (!isLoadMore) currentPage = 1;
             const container = document.getElementById('contentContainer');
             if (!isLoadMore) container.innerHTML = '<div class="text-center mt-10">Loading...</div>';
-            
+
             try {
                 const json = await fetchContent(currentPage);
                 const items = json.data || [];
                 if (!isLoadMore) container.innerHTML = '';
-                
+
                 items.forEach(item => {
                     const div = document.createElement('div');
                     div.className = "bg-white p-4 mb-3 rounded-xl border flex items-center justify-between";
                     if (currentTab === 'videos') {
+                        const lId = item.lectureId || item.id || item._id;
                         div.innerHTML = `<div class="flex-1"><h3 class="font-bold text-sm text-gray-800">${item.topic || 'Untitled'}</h3></div>
-                                        <button class="bg-indigo-600 text-white px-4 py-2 rounded-lg text-sm font-bold" onclick="openPlayerModal('${item._id}', '${(item.topic||'').replace(/'/g, "\\'")}', '${item.lectureId || ''}')">Watch</button>`;
+                                        <button class="bg-indigo-600 text-white px-4 py-2 rounded-lg text-sm font-bold" onclick="openPlayerModal('${item._id}', '${(item.topic||'').replace(/'/g, "\\'")}', '${lId}')">Watch</button>`;
                     } else {
                         const hw = (item.homeworkIds || [])[0];
                         const fileUrl = hw && hw.attachmentIds && hw.attachmentIds.length > 0 ? (hw.attachmentIds[0].baseUrl + hw.attachmentIds[0].key) : '#';
@@ -89,9 +95,11 @@
 
         function openPlayerModal(id, title, lectureId) {
             document.getElementById('playerModal').classList.remove('hidden');
-            const query = `?videoId=${id}&schId=${tId}&batchId=${bId}&subjectId=${sId}&lectureId=${lectureId}&title=${encodeURIComponent(title)}`;
-            document.getElementById('p1Btn').onclick = () => window.location.href = '/player2' + query;
-            document.getElementById('p2Btn').onclick = () => window.location.href = '/player2' + query;
+            const query1 = `?batchId=${bId}&lectureId=${lectureId}`;
+            const query2 = `?videoId=${id}&schId=${tId}&batchId=${bId}&subjectId=${sId}&lectureId=${lectureId}&title=${encodeURIComponent(title)}`;
+            document.getElementById('p1Btn').onclick = () => window.location.href = '/player' + query1;
+            document.getElementById('p2Btn').onclick = () => window.0nclick = ... // (apna player link)
+            document.getElementById('p2Btn').onclick = () => window.location.href = '/player2' + query2;
         }
 
         loadContent();
