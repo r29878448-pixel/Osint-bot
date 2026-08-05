@@ -17,7 +17,7 @@
         const sId = params.get('subjectId') || params.get('subject_id');
         const vId = params.get('videoId') || params.get('video_id');
         const title = params.get('title') || params.get('video_name') || 'Video Player';
-        const baseUrl = "https://vid-stream-marco.vercel.app/play.php";
+        const baseUrl = "https://vidcloud.eu.org/play.php";
         const targetUrl = `${baseUrl}?batch_id=${bId}&subject_id=${sId}&video_id=${vId}&video_name=${encodeURIComponent(title)}&video_type=new&play_type=Lecture&enc_video_url=`;
         document.getElementById('player-frame').src = targetUrl;
     </script>
