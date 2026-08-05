@@ -301,7 +301,7 @@
 
       showSkeleton();
 
-      fetch("https://devcoderz-api.vercel.app/api/all-batches.js")
+      fetch("https://devcoderzxvt.vercel.app/api/batches.js")
         .then((r) => r.json())
         .then((d) => {
           ALL = d.batches || d.data?.batches || d.data || [];
