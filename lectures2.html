@@ -38,15 +38,10 @@
         }
 
         async function fetchContent(page) {
-            // Ab yahan koi bhi third-party API ya lambe URLs nahi dikhenge.
-            // Sirf ek clean internal proxy route call hoga.
-            const secureUrl = `/api/content?batchId=${bId}&subjectId=${sId}&contentType=${currentTab}&tag=${tId}&page=${page}`;
-            
-            const res = await fetch(secureUrl, {
-                headers: {
-                    "X-Requested-With": "XMLHttpRequest"
-                }
-            });
+            const api1 = `https://devcoderz-player.vercel.app/api/lectures?batchId=${bId}&subjectId=${sId}&contentType=${currentTab}&tag=${tId}&page=${page}`;
+            const api2 = `https://devcoderz-player.vercel.app/api/notes?batchId=${bId}&subjectId=${sId}&contentType=${currentTab}&tag=${tId}&page=${page}`;
+            const url = (page === 1) ? api1 : api2;
+            const res = await fetch(url);
             return await res.json();
         }
 
@@ -65,8 +60,9 @@
                     div.className = "bg-white p-4 mb-3 rounded-xl border flex items-center justify-between";
                     if (currentTab === 'videos') {
                         const lId = item.lectureId || item.id || item._id;
+                        const rawVideoUrl = item.url || (item.videoDetails && item.videoDetails.videoUrl) || '';
                         div.innerHTML = `<div class="flex-1"><h3 class="font-bold text-sm text-gray-800">${item.topic || 'Untitled'}</h3></div>
-                                        <button class="bg-indigo-600 text-white px-4 py-2 rounded-lg text-sm font-bold" onclick="openPlayerModal('${item._id}', '${(item.topic||'').replace(/'/g, "\\'")}', '${lId}')">Watch</button>`;
+                                        <button class="bg-indigo-600 text-white px-4 py-2 rounded-lg text-sm font-bold" onclick="openPlayerModal('${item._id}', '${(item.topic||'').replace(/'/g, "\\'")}', '${lId}', '${rawVideoUrl}')">Watch</button>`;
                     } else {
                         const hw = (item.homeworkIds || [])[0];
                         const fileUrl = hw && hw.attachmentIds && hw.attachmentIds.length > 0 ? (hw.attachmentIds[0].baseUrl + hw.attachmentIds[0].key) : '#';
@@ -93,13 +89,21 @@
             loadContent();
         }
 
-        function openPlayerModal(id, title, lectureId) {
+        function openPlayerModal(id, title, lectureId, videoUrl) {
             document.getElementById('playerModal').classList.remove('hidden');
             const query1 = `?batchId=${bId}&lectureId=${lectureId}`;
-            const query2 = `?videoId=${id}&schId=${tId}&batchId=${bId}&subjectId=${sId}&lectureId=${lectureId}&title=${encodeURIComponent(title)}`;
+            
+            let m3u8Url = '';
+            if (videoUrl) {
+                const match = videoUrl.match(/\/([a-f0-9\-]{36})\/master\.mpd/);
+                if (match && match[1]) {
+                    m3u8Url = `https://stream.pimaxer.in/${match[1]}/master.m3u8`;
+                }
+            }
+            const query2 = m3u8Url ? `?Url=${encodeURIComponent(m3u8Url)}` : '';
+
             document.getElementById('p1Btn').onclick = () => window.location.href = '/player' + query1;
-            document.getElementById('p2Btn').onclick = () => window.0nclick = ... // (apna player link)
-            document.getElementById('p2Btn').onclick = () => window.location.href = '/player2' + query2;
+            document.getElementById('p2Btn').onclick = () => window.location.href = 'player3.html' + query2;
         }
 
         loadContent();
