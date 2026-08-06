@@ -108,7 +108,7 @@
                 }
             }
             const query1 = m3u8Url ? `?Url=${encodeURIComponent(m3u8Url)}` : '';
-            const query2 = `?batchId=${batchId}&subjectId=${subjectId}&topicId=${topicId}&lectureId=${lectureId}&typeId=${typeId}&videoUrl=${videoUrl}&videoName=${videoName}&videoImg=${videoImg}&playType=${lectureType}`;
+            const query2 = `?batchId=${batchId}&subjectId=${subjectId}&topicId=${topicId}&lectureId=${lectureId}&typeId=${typeId}&videoUrl=${videoUrl}&videoName=${videoName}&videoImg=${videoImg}&playType=Lecture`;
 
             document.getElementById('p1Btn').onclick = () => window.location.href = '/player' + query1;
             document.getElementById('p2Btn').onclick = () => window.location.href = 'player2.html' + query2;
