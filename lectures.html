@@ -24,7 +24,7 @@
         <div class="bg-white p-6 rounded-xl w-80 shadow-xl">
             <h2 class="text-lg font-bold mb-4">Select Player</h2>
             <button id="p1Btn" class="w-full bg-blue-600 text-white py-2 rounded-lg mb-2 font-bold">Player 1</button>
-            <button id="p2Btn" class="w-full bg-indigo-600 text-white py-2 rounded-lg font-bold">Player 2</button>
+            <button id="p2Btn" class="w-full bg-indigo-600 text-white py-2 rounded-lg font-bold">Player 2 (Marco Player)</button>
             <button onclick="document.getElementById('playerModal').classList.add('hidden')" class="w-full mt-4 text-gray-500 text-sm">Cancel</button>
         </div>
     </div>
@@ -91,8 +91,7 @@
 
         function openPlayerModal(id, title, lectureId, videoUrl) {
             document.getElementById('playerModal').classList.remove('hidden');
-            const query1 = `?batchId=${bId}&lectureId=${lectureId}`;
-
+            
             let m3u8Url = '';
             if (videoUrl) {
                 const match = videoUrl.match(/\/([a-f0-9\-]{36})\/master\.mpd/);
@@ -100,10 +99,11 @@
                     m3u8Url = `https://stream.pimaxer.in/${match[1]}/master.m3u8`;
                 }
             }
-            const query2 = m3u8Url ? `?Url=${encodeURIComponent(m3u8Url)}` : '';
+            const query1 = m3u8Url ? `?Url=${encodeURIComponent(m3u8Url)}` : '';
+            const query2 = `?batchId=${bId}&subjectId=${sId}&lectureId=${lectureId}`;
 
-            document.getElementById('p1Btn').onclick = () => window.location.href = '/player' + query2;
-            document.getElementById('p2Btn').onclick = () => window.location.href = 'player.html' + query2;
+            document.getElementById('p1Btn').onclick = () => window.location.href = '/player' + query1;
+            document.getElementById('p2Btn').onclick = () => window.location.href = 'player2.html' + query2;
         }
 
         loadContent();
