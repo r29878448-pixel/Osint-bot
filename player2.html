@@ -37,7 +37,7 @@
 
         if (batchId && subjectId && lectureId) {
             const baseUrl = "https://marco-player.pages.dev/player/api";
-            const dynamicUrl = `${baseUrl}/${batchId}/${subjectId}/${lectureId}`;
+            const dynamicUrl = `${baseUrl}/${batchId}/${subjectId}/${lectureId}/marco-player`;
             document.getElementById('marcoPlayer').src = dynamicUrl;
         } else {
             document.body.innerHTML = '<div style="color:white; text-align:center; padding-top:20vh; font-family:sans-serif;"><h2>Error: Missing Player IDs!</h2></div>';
