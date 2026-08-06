@@ -301,7 +301,7 @@
 
       showSkeleton();
 
-      fetch("https://rarestudy.github.io/rarestudy/batches.json?v=1785942018302")
+      fetch("https://devcoderz-backend.vercel.app/api/batches")
         .then((r) => r.json())
         .then((d) => {
           ALL = d.batches || d.data?.batches || d.data || [];
