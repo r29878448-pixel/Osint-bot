@@ -31,13 +31,19 @@
     </div>
     <script>
         const params = new URLSearchParams(window.location.search);
-        const batchId = params.get('batchId');
-        const subjectId = params.get('subjectId');
-        const lectureId = params.get('lectureId');
+        const batchId = params.get('batchId') || '';
+        const subjectId = params.get('subjectId') || '';
+        const topicId = params.get('topicId') || '';
+        const lectureId = params.get('lectureId') || '';
+        const typeId = params.get('typeId') || '';
+        const videoUrl = params.get('videoUrl') || '';
+        const videoName = params.get('videoName') || '';
+        const videoImg = params.get('videoImg') || '';
+        const playType = params.get('playType') || 'Lecture';
 
         if (batchId && subjectId && lectureId) {
-            const baseUrl = "https://marco-player.pages.dev/player/api";
-            const dynamicUrl = `${baseUrl}/${batchId}/${subjectId}/${lectureId}/marco-player`;
+            const baseUrl = "https://vid-stream-marco.vercel.app/play.php";
+            const dynamicUrl = `${baseUrl}?batch_id=${batchId}&program_id=&subject_id=${subjectId}&topic_id=${topicId}&video_id=${lectureId}&typeId=${typeId}&video_url=${videoUrl}&video_name=${videoName}&video_img=${videoImg}&video_type=new&play_type=${playType}`;
             document.getElementById('marcoPlayer').src = dynamicUrl;
         } else {
             document.body.innerHTML = '<div style="color:white; text-align:center; padding-top:20vh; font-family:sans-serif;"><h2>Error: Missing Player IDs!</h2></div>';
