@@ -102,8 +102,8 @@
             }
             const query2 = m3u8Url ? `?Url=${encodeURIComponent(m3u8Url)}` : '';
 
-            document.getElementById('p1Btn').onclick = () => window.location.href = '/player3' + query2;
-            document.getElementById('p2Btn').onclick = () => window.location.href = 'player3.html' + query2;
+            document.getElementById('p1Btn').onclick = () => window.location.href = '/player' + query2;
+            document.getElementById('p2Btn').onclick = () => window.location.href = 'player.html' + query2;
         }
 
         loadContent();
