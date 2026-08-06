@@ -2,24 +2,108 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Video Player</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dynamic Marco Player Iframe</title>
     <style>
-        body, html { margin: 0; padding: 0; width: 100%; height: 100%; background: #000; overflow: hidden; }
-        #player-frame { position: fixed; top: 0; left: 0; width: 100%; height: 100%; border: none; display: block; }
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .player-container {
+            width: 100%;
+            max-width: 900px;
+            background: #000;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        }
+        iframe {
+            width: 100%;
+            height: 500px;
+            border: none;
+            display: block;
+        }
+        .controls {
+            margin-top: 20px;
+            background: #fff;
+            padding: 15px;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            width: 100%;
+            max-width: 870px;
+        }
+        .controls input {
+            width: 100%;
+            padding: 8px;
+            margin: 5px 0 15px 0;
+            box-sizing: border-box;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        .controls button {
+            background-color: #007bff;
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        .controls button:hover {
+            background-color: #0056b3;
+        }
     </style>
 </head>
 <body>
-    <iframe id="player-frame" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+
+    <h2>Marco Player Dynamic Iframe</h2>
+
+    <!-- Iframe Container -->
+    <div class="player-container">
+        <iframe id="marcoPlayer" src="" allowfullscreen></iframe>
+    </div>
+
+    <!-- Dynamic ID Inputs (Agar aapko runtime pe IDs change karni ho) -->
+    <div class="controls">
+        <h3>Update Player IDs Dynamically</h3>
+        <label>Batch ID:</label>
+        <input type="text" id="batchIdInput" value="67bebfdc57b811862726ff1c">
+
+        <label>Subject ID:</label>
+        <input type="text" id="subjectIdInput" value="69994fac9f86f2dee725c177">
+
+        <label>Lecture ID:</label>
+        <input type="text" id="lectureIdInput" value="6a6dbffcc7ad88fa0762278c">
+
+        <button onclick="updatePlayer()">Load Lecture</button>
+    </div>
+
     <script>
-        const params = new URLSearchParams(window.location.search);
-        const bId = params.get('batchId') || params.get('batch_id');
-        const sId = params.get('subjectId') || params.get('subject_id');
-        const vId = params.get('videoId') || params.get('video_id');
-        const title = params.get('title') || params.get('video_name') || 'Video Player';
-        const baseUrl = "https://vidcloud.eu.org/play.php";
-        const targetUrl = `${baseUrl}?batch_id=${bId}&subject_id=${sId}&video_id=${vId}&video_name=${encodeURIComponent(title)}&video_type=new&play_type=Lecture&enc_video_url=`;
-        document.getElementById('player-frame').src = targetUrl;
+        // Base URL aapka provided domain hai
+        const baseUrl = "https://marco-player.pages.dev/player/api";
+
+        function updatePlayer() {
+            // Input fields se values lena
+            const batchId = document.getElementById('batchIdInput').value.trim();
+            const subjectId = document.getElementById('subjectIdInput').value.trim();
+            const lectureId = document.getElementById('lectureIdInput').value.trim();
+
+            // Dynamic URL construct karna
+            const dynamicUrl = `${baseUrl}/${batchId}/${subjectId}/${lectureId}/marco-player`;
+
+            // Iframe ka src update karna
+            document.getElementById('marcoPlayer').src = dynamicUrl;
+        }
+
+        // Page load hote hi default IDs ke sath player load karna
+        window.onload = function() {
+            updatePlayer();
+        };
     </script>
+
 </body>
 </html>
