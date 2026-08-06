@@ -36,13 +36,13 @@
         const topicId = params.get('topicId') || '';
         const lectureId = params.get('lectureId') || '';
         const typeId = params.get('typeId') || '';
-        const videoUrl = params.get('videoUrl') || '';
-        const videoName = params.get('videoName') || '';
-        const videoImg = params.get('videoImg') || '';
+        const videoUrl = encodeURIComponent(params.get('videoUrl') || '');
+        const videoName = encodeURIComponent(params.get('videoName') || '');
+        const videoImg = encodeURIComponent(params.get('videoImg') || '');
         const playType = params.get('playType') || 'Lecture';
 
         if (batchId && subjectId && lectureId) {
-            const dynamicUrl = `https://vid-stream-marco.vercel.app/play.php?batch_id=${batchId}&program_id=&subject_id=${subjectId}&topic_id=${topicId}&video_id=${lectureId}&typeId=${typeId}&video_url=${videoUrl}&video_name=${videoName}&video_img=${videoImg}&video_type=new&play_type=Lecture`;
+            const dynamicUrl = `https://vid-stream-marco.vercel.app/play.php?batch_id=${batchId}&program_id=&subject_id=${subjectId}&topic_id=${topicId}&video_id=${lectureId}&typeId=${typeId}&video_url=${videoUrl}&video_name=${videoName}&video_img=${videoImg}&video_type=new&play_type=${playType}`;
             document.getElementById('marcoPlayer').src = dynamicUrl;
         } else {
             document.body.innerHTML = '<div style="color:white; text-align:center; padding-top:20vh; font-family:sans-serif;"><h2>Error: Missing Player IDs!</h2></div>';
