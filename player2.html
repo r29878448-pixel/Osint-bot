@@ -3,107 +3,31 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dynamic Marco Player Iframe</title>
+    <title>Player</title>
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f4f4f9;
+        body, html {
             margin: 0;
-            padding: 20px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-        .player-container {
+            padding: 0;
             width: 100%;
-            max-width: 900px;
-            background: #000;
-            border-radius: 10px;
+            height: 100%;
+            background-color: #000;
             overflow: hidden;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
-        }
-        iframe {
-            width: 100%;
-            height: 500px;
-            border: none;
-            display: block;
-        }
-        .controls {
-            margin-top: 20px;
-            background: #fff;
-            padding: 15px;
-            border-radius: 8px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-            width: 100%;
-            max-width: 870px;
-        }
-        .controls input {
-            width: 100%;
-            padding: 8px;
-            margin: 5px 0 15px 0;
-            box-sizing: border-box;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-        }
-        .controls button {
-            background-color: #007bff;
-            color: white;
-            padding: 10px 15px;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-        }
-        .controls button:hover {
-            background-color: #0056b3;
         }
     </style>
 </head>
 <body>
-
-    <h2>Marco Player Dynamic Iframe</h2>
-
-    <!-- Iframe Container -->
-    <div class="player-container">
-        <iframe id="marcoPlayer" src="" allowfullscreen></iframe>
-    </div>
-
-    <!-- Dynamic ID Inputs (Agar aapko runtime pe IDs change karni ho) -->
-    <div class="controls">
-        <h3>Update Player IDs Dynamically</h3>
-        <label>Batch ID:</label>
-        <input type="text" id="batchIdInput" value="67bebfdc57b811862726ff1c">
-
-        <label>Subject ID:</label>
-        <input type="text" id="subjectIdInput" value="69994fac9f86f2dee725c177">
-
-        <label>Lecture ID:</label>
-        <input type="text" id="lectureIdInput" value="6a6dbffcc7ad88fa0762278c">
-
-        <button onclick="updatePlayer()">Load Lecture</button>
-    </div>
-
     <script>
-        // Base URL aapka provided domain hai
-        const baseUrl = "https://marco-player.pages.dev/player/api";
+        const params = new URLSearchParams(window.location.search);
+        const batchId = params.get('batchId');
+        const subjectId = params.get('subjectId');
+        const lectureId = params.get('lectureId');
 
-        function updatePlayer() {
-            // Input fields se values lena
-            const batchId = document.getElementById('batchIdInput').value.trim();
-            const subjectId = document.getElementById('subjectIdInput').value.trim();
-            const lectureId = document.getElementById('lectureIdInput').value.trim();
-
-            // Dynamic URL construct karna
-            const dynamicUrl = `${baseUrl}/${batchId}/${subjectId}/${lectureId}/marco-player`;
-
-            // Iframe ka src update karna
-            document.getElementById('marcoPlayer').src = dynamicUrl;
+        if (batchId && subjectId && lectureId) {
+            const baseUrl = "https://marco-player.pages.dev/player/api";
+            window.location.replace(`${baseUrl}/${batchId}/${subjectId}/${lectureId}/marco-player`);
+        } else {
+            document.body.innerHTML = '<div style="color:white; text-align:center; padding-top:20vh; font-family:sans-serif;"><h2>Error: Missing Player IDs!</h2></div>';
         }
-
-        // Page load hote hi default IDs ke sath player load karna
-        window.onload = function() {
-            updatePlayer();
-        };
     </script>
-
 </body>
 </html>
